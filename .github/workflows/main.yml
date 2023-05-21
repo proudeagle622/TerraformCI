@@ -1,0 +1,83 @@
+Skip to content
+Product
+Solutions
+Open Source
+Pricing
+Search
+Sign in
+Sign up
+pluralsight-cloud
+/
+content-Hands-on-with-Terraform-on-Azure
+Public
+Code
+Issues
+Pull requests
+Actions
+Projects
+Security
+Insights
+content-Hands-on-with-Terraform-on-Azure/Labs/3 - Provide Continuous Delivery with GitHub and Terraform Cloud for Azure/terraform.yml
+@WayneHoggett-ACG
+WayneHoggett-ACG Updates
+Latest commit bf3051c on Feb 22
+ History
+ 1 contributor
+41 lines (32 sloc)  1.08 KB
+ 
+
+name: 'Terraform'
+
+on:
+  push:
+    branches: [ "main" ]
+    paths: '**.tf'
+
+permissions:
+  contents: read
+
+jobs:
+  terraform:
+    name: 'Terraform'
+    runs-on: ubuntu-latest
+    
+    defaults:
+      run:
+        shell: bash
+
+    steps:
+    # Checkout the repository to the GitHub Actions runner
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    # Install the latest version of Terraform CLI and configure the Terraform CLI configuration file with a Terraform Cloud user API token
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v1
+      with:
+        cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
+
+    # Initialize a new or existing Terraform working directory by creating initial files, loading any remote state, downloading modules, etc.
+    - name: Terraform Init
+      run: terraform init
+
+    # Generates an execution plan for Terraform
+    - name: Terraform Plan
+      run: terraform plan -input=false
+
+      # Build or change infrastructure according to Terraform configuration files
+    - name: Terraform Apply
+      run: terraform apply -auto-approve -input=false
+Footer
+© 2023 GitHub, Inc.
+Footer navigation
+Terms
+Privacy
+Security
+Status
+Docs
+Contact GitHub
+Pricing
+API
+Training
+Blog
+About
